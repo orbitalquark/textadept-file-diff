@@ -75,4 +75,3 @@ release: file_diff | $(diff_match_patch_zip)
 	make -C $< deps && make -C $< -j ta="../../.."
 	zip -r $<.zip $< -x "*.zip" "*.h" "*.o" "*.def" "*.la" "$</.git*" && rm -r $<
 file_diff: ; $(call archive,$@)
-

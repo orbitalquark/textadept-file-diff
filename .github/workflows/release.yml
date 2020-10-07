@@ -65,7 +65,7 @@ jobs:
           tag: latest
           allowUpdates: true
           body: Latest automated build (ignore github-actions' release date)
-          artifacts: textadept/modules/file_diff/file_diff.zip
+          artifacts: file_diff.zip
           token: ${{ secrets.GITHUB_TOKEN }}
   cleanup:
     runs-on: ubuntu-latest
