@@ -26,15 +26,12 @@ jobs:
         shell: bash
         run: |
           mv textadept-build/* textadept/src && make -C textadept/src lua
-          cd textadept/modules/file_diff
-          make deps && make -j
-          cd .. && zip -r ../../file_diff.zip file_diff -x "*.zip" "*.h" "*.o" \
-            "*.def" "*.la" file_diff/.github
+          make -C textadept/modules/file_diff release
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
         with:
           name: artifacts
-          path: file_diff.zip
+          path: textadept/modules/file_diff.zip
   release:
     runs-on: ubuntu-latest
     needs: build
@@ -56,7 +53,7 @@ jobs:
           tag: latest
           allowUpdates: true
           body: Latest automated build (ignore github-actions' release date)
-          artifacts: file_diff.zip
+          artifacts: textadept/modules/file_diff.zip
           token: ${{ secrets.GITHUB_TOKEN }}
   cleanup:
     runs-on: ubuntu-latest

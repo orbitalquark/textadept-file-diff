@@ -61,3 +61,18 @@ diff_match_patch_zip = 7f95b37e554453262e2bcda830724fc362614103.zip
 $(diff_match_patch_zip):
 	wget https://github.com/leutloff/diff-match-patch-cpp-stl/archive/$@
 diff_match_patch.h: | $(diff_match_patch_zip) ; unzip -j $| "*/$@"
+
+# Releases.
+
+ifneq (, $(shell hg summary 2>/dev/null))
+  archive = hg archive -X ".hg*" $(1)
+else
+  archive = git archive HEAD --prefix $(1)/ | tar -xf -
+endif
+
+release: file_diff | $(diff_match_patch_zip)
+	cp $| $<
+	make -C $< deps && make -C $< -j ta="../../.."
+	zip -r $<.zip $< -x "*.zip" "*.h" "*.o" "*.def" "*.la" "$</.git*" && rm -r $<
+file_diff: ; $(call archive,$@)
+
