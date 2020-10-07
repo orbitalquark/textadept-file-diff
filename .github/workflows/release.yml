@@ -43,7 +43,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: artifacts
-          path: textadept/modules/file_diff.zip
+          path: textadept/modules/file_diff/file_diff.zip
   release:
     runs-on: ubuntu-latest
     needs: build
@@ -65,7 +65,7 @@ jobs:
           tag: latest
           allowUpdates: true
           body: Latest automated build (ignore github-actions' release date)
-          artifacts: textadept/modules/file_diff.zip
+          artifacts: textadept/modules/file_diff/file_diff.zip
           token: ${{ secrets.GITHUB_TOKEN }}
   cleanup:
     runs-on: ubuntu-latest
