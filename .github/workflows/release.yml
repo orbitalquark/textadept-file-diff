@@ -22,6 +22,18 @@ jobs:
         uses: actions/checkout@v2
         with:
           path: textadept/modules/file_diff
+      - name: Git init if necessary
+        shell: bash
+        run: |
+          # If git version is less than 2.18, a git clone will not be made in
+          # this container. In that case, make a temporary repository so
+          # "make release" can archive the repo's contents for release.
+          if [[ -d .git ]]; then exit 0; fi
+          git init
+          git add .
+          git config --global user.email "none@example.com"
+          git config --global user.name "none"
+          git commit -m 'none'
       - name: Build
         shell: bash
         run: |
