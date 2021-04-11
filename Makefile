@@ -18,18 +18,15 @@ CROSS_OSX = x86_64-apple-darwin17-c++
 
 diff.so: diff.o ; $(CXX) -shared $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
 diff.dll: diff-win.o lua.la
-	$(CROSS_WIN)$(CXX) -shared -static-libgcc -static-libstdc++ $(CXXFLAGS) -o \
-		$@ $^ $(LDFLAGS)
+	$(CROSS_WIN)$(CXX) -shared -static-libgcc -static-libstdc++ $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
 diff-curses.dll: diff-win.o lua-curses.la
-	$(CROSS_WIN)$(CXX) -shared -static-libgcc -static-libstdc++ $(CXXFLAGS) -o \
-		$@ $^ $(LDFLAGS)
+	$(CROSS_WIN)$(CXX) -shared -static-libgcc -static-libstdc++ $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
 diffosx.so: diff-osx.o
 	$(CROSS_OSX) -shared $(CXXFLAGS_OSX) -undefined dynamic_lookup -o $@ $^
 
 diff.o: diff.cxx ; $(CXX) -c $(CXXFLAGS) -I$(ta_lua) -o $@ $^
 diff-win.o: diff.cxx
-	$(CROSS_WIN)$(CXX) -c $(CXXFLAGS) -DLUA_BUILD_AS_DLL -DLUA_LIB -I$(ta_lua) \
-		-o $@ $^
+	$(CROSS_WIN)$(CXX) -c $(CXXFLAGS) -DLUA_BUILD_AS_DLL -DLUA_LIB -I$(ta_lua) -o $@ $^
 diff-osx.o: diff.cxx ; $(CROSS_OSX) -c $(CXXFLAGS_OSX) -I$(ta_lua) -o $@ $^
 
 lua.def:
@@ -58,8 +55,7 @@ luadoc: init.lua
 deps: diff_match_patch.h
 
 diff_match_patch_zip = 7f95b37e554453262e2bcda830724fc362614103.zip
-$(diff_match_patch_zip):
-	wget https://github.com/leutloff/diff-match-patch-cpp-stl/archive/$@
+$(diff_match_patch_zip): ; wget https://github.com/leutloff/diff-match-patch-cpp-stl/archive/$@
 diff_match_patch.h: | $(diff_match_patch_zip) ; unzip -j $| "*/$@"
 
 # Releases.
