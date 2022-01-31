@@ -1,4 +1,4 @@
--- Copyright 2015-2021 Mitchell. See LICENSE.
+-- Copyright 2015-2022 Mitchell. See LICENSE.
 
 local M = {}
 
@@ -59,7 +59,7 @@ local M = {}
 module('file_diff')]]
 
 M.theme = 'light'
-local bg_color = view.property_expanded['style.default']:match('back:([^,]+)')
+local bg_color = view.property['style.default']:match('back:([^,]+)')
 if bg_color and tonumber(bg_color) < 0x808080 and not CURSES then M.theme = 'dark' end
 
 M.MARK_ADDITION = _SCINTILLA.next_marker_number()
