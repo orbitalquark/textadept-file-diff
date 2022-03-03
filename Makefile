@@ -13,30 +13,30 @@ clean: ; rm -f *.o *.so *.dll
 
 # Platform objects.
 
-CROSS_WIN = i686-w64-mingw32-
+CROSS_WIN = x86_64-w64-mingw32-g++-posix
+DLLTOOL = x86_64-w64-mingw32-dlltool
 CROSS_OSX = x86_64-apple-darwin17-c++
 
 diff.so: diff.o ; $(CXX) -shared $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
 diff.dll: diff-win.o lua.la
-	$(CROSS_WIN)$(CXX) -shared -static-libgcc -static-libstdc++ $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
+	$(CROSS_WIN) -shared -static-libgcc -static-libstdc++ $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
 diff-curses.dll: diff-win.o lua-curses.la
-	$(CROSS_WIN)$(CXX) -shared -static-libgcc -static-libstdc++ $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
+	$(CROSS_WIN) -shared -static-libgcc -static-libstdc++ $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
 diffosx.so: diff-osx.o
 	$(CROSS_OSX) -shared $(CXXFLAGS_OSX) -undefined dynamic_lookup -o $@ $^
 
 diff.o: diff.cxx ; $(CXX) -c $(CXXFLAGS) -I$(ta_lua) -o $@ $^
-diff-win.o: diff.cxx
-	$(CROSS_WIN)$(CXX) -c $(CXXFLAGS) -DLUA_BUILD_AS_DLL -DLUA_LIB -I$(ta_lua) -o $@ $^
+diff-win.o: diff.cxx ; $(CROSS_WIN) -c $(CXXFLAGS) -DLUA_BUILD_AS_DLL -DLUA_LIB -I$(ta_lua) -o $@ $^
 diff-osx.o: diff.cxx ; $(CROSS_OSX) -c $(CXXFLAGS_OSX) -I$(ta_lua) -o $@ $^
 
 lua.def:
 	echo LIBRARY \"textadept.exe\" > $@ && echo EXPORTS >> $@
 	grep -v "^#" $(ta_src)/lua.sym >> $@
-lua.la: lua.def ; $(CROSS_WIN)dlltool -d $< -l $@
+lua.la: lua.def ; $(DLLTOOL) -d $< -l $@
 lua-curses.def:
 	echo LIBRARY \"textadept-curses.exe\" > $@ && echo EXPORTS >> $@
 	grep -v "^#" $(ta_src)/lua.sym >> $@
-lua-curses.la: lua-curses.def ; $(CROSS_WIN)dlltool -d $< -l $@
+lua-curses.la: lua-curses.def ; $(DLLTOOL) -d $< -l $@
 
 # Documentation.
 

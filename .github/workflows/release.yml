@@ -6,7 +6,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    container: ghcr.io/orbitalquark/textadept-build:v1.0
+    container: ghcr.io/orbitalquark/textadept-build:v2.0
     steps:
       - name: Checkout textadept
         uses: actions/checkout@v2
