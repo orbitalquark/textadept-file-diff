@@ -7,6 +7,7 @@ ta_lua = $(ta_src)/lua/src
 CXX = g++
 CXXFLAGS = -std=c++11 -pedantic -fPIC -Wall
 LDFLAGS = -Wl,--retain-symbols-file -Wl,$(ta_src)/lua.sym
+WGET = wget -O $@
 
 all: diff.so diff.dll diff-curses.dll diffosx.so
 clean: ; rm -f *.o *.so *.dll
@@ -55,7 +56,7 @@ luadoc: init.lua
 deps: diff_match_patch.h
 
 diff_match_patch_zip = 7f95b37e554453262e2bcda830724fc362614103.zip
-$(diff_match_patch_zip): ; wget https://github.com/leutloff/diff-match-patch-cpp-stl/archive/$@
+$(diff_match_patch_zip): ; $(WGET) https://github.com/leutloff/diff-match-patch-cpp-stl/archive/$@
 diff_match_patch.h: | $(diff_match_patch_zip) ; unzip -j $| "*/$@"
 
 # Releases.
