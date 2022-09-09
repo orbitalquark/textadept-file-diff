@@ -47,12 +47,6 @@ local M = {}
 -- Alt+Left | ⌥⇠ | M-Left | Merge left
 -- Alt+Right | ⌥⇢ | M-Right | Merge right
 --
--- @field theme (string)
---   The theme to use, either 'dark' or 'light'.
---   This is not the theme used with Textadept. Depending on this setting, additions will be
---   colored 'dark_green' or 'light_green', deletions will be colored 'dark_red' or 'light_red',
---   and so on.
---   The default value is auto-detected.
 -- @field MARK_ADDITION (number)
 --   The marker for line additions.
 -- @field MARK_DELETION (number)
@@ -64,10 +58,6 @@ local M = {}
 -- @field INDIC_DELETION (number)
 --   The indicator number for text deleted within lines.
 module('file_diff')]]
-
-M.theme = 'light'
-local bg_color = view.property['style.default']:match('back:([^,]+)')
-if bg_color and tonumber(bg_color) < 0x808080 and not CURSES then M.theme = 'dark' end
 
 M.MARK_ADDITION = _SCINTILLA.next_marker_number()
 M.MARK_DELETION = _SCINTILLA.next_marker_number()
@@ -513,23 +503,25 @@ end)
 -- Highlight differences as text is typed and deleted.
 events.connect(events.MODIFIED, function(position, modification_type)
   if not _VIEWS[view1] or not _VIEWS[view2] then return end
-  if modification_type & (0x01 | 0x02) > 0 then mark_changes() end
+  if modification_type & (0x01 | 0x02) > 0 then mark_changes() end -- insert text | delete text
 end)
 
 events.connect(events.VIEW_NEW, function()
   local markers = {
-    [MARK_ADDITION] = M.theme .. '_green', [MARK_DELETION] = M.theme .. '_red',
-    [MARK_MODIFICATION] = M.theme .. '_yellow'
+    [MARK_ADDITION] = 'green', [MARK_DELETION] = 'red', [MARK_MODIFICATION] = 'yellow'
   }
   for mark, color in pairs(markers) do
-    view:marker_define(mark, view.MARK_BACKGROUND)
-    view.marker_back[mark] = view.property_int['color.' .. color]
+    view:marker_define(mark, not CURSES and view.MARK_BACKGROUND or view.MARK_FULLRECT)
+    view.marker_back[mark] = view.colors[color]
+    if not CURSES then
+      view.marker_layer[mark], view.marker_alpha[mark] = view.LAYER_UNDER_TEXT, 0x60
+    end
   end
-  local indicators = {[INDIC_ADDITION] = M.theme .. '_green', [INDIC_DELETION] = M.theme .. '_red'}
+  local indicators = {[INDIC_ADDITION] = 'green', [INDIC_DELETION] = 'red'}
   for indic, color in pairs(indicators) do
-    view.indic_style[indic] = view.INDIC_FULLBOX
-    view.indic_fore[indic] = view.property_int['color.' .. color]
-    view.indic_alpha[indic], view.indic_under[indic] = 255, true
+    view.indic_style[indic] = not CURSES and view.INDIC_FULLBOX or view.INDIC_STRAIGHTBOX
+    view.indic_fore[indic] = view.colors[color]
+    if not CURSES then view.indic_alpha[indic], view.indic_under[indic] = 0x60, true end
   end
 end)
 
