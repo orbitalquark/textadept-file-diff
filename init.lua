@@ -37,7 +37,7 @@ local M = {}
 --
 -- ### Key Bindings
 --
--- Windows, Linux, BSD | macOS | Terminal | Command
+-- Windows and Linux | macOS | Terminal | Command
 -- -|-|-|-
 -- **Tools**| | |
 -- F6 | F6 | F6 | Compare files...
@@ -293,16 +293,14 @@ local starting_diff = false
 --   default value is `false`, comparing the two files side-by-side.
 -- @name start
 function M.start(file1, file2, horizontal)
-  file1 = file1 or ui.dialogs.fileselect{
+  file1 = file1 or ui.dialogs.open{
     title = _L['Select the first file to compare'],
-    with_directory = (buffer.filename or ''):match('^.+[/\\]') or lfs.currentdir(),
-    width = CURSES and ui.size[1] - 2 or nil
+    dir = (buffer.filename or ''):match('^.+[/\\]') or lfs.currentdir()
   }
   if not file1 then return end
-  file2 = file2 or ui.dialogs.fileselect{
+  file2 = file2 or ui.dialogs.open{
     title = string.format('%s %s', _L['Select the file to compare to'], file1:match('[^/\\]+$')),
-    with_directory = file1:match('^.+[/\\]') or lfs.currentdir(),
-    width = CURSES and ui.size[1] - 2 or nil
+    dir = file1:match('^.+[/\\]') or lfs.currentdir()
   }
   if not file2 then return end
   starting_diff = true

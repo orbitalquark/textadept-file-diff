@@ -33,7 +33,7 @@ even if one buffer has a change and the other does not (additions or deletions).
 
 ## Key Bindings
 
-Windows, Linux, BSD | macOS | Terminal | Command
+Windows and Linux | macOS | Terminal | Command
 -|-|-|-
 **Tools**| | |
 F6 | F6 | F6 | Compare files...
@@ -70,15 +70,6 @@ The marker for line deletions.
 ### `file_diff.MARK_MODIFICATION` (number)
 
 The marker for line modifications.
-
-<a id="file_diff.theme"></a>
-### `file_diff.theme` (string)
-
-The theme to use, either 'dark' or 'light'.
-  This is not the theme used with Textadept. Depending on this setting, additions will be
-  colored 'dark_green' or 'light_green', deletions will be colored 'dark_red' or 'light_red',
-  and so on.
-  The default value is auto-detected.
 
 
 ## Functions defined by `file_diff`
