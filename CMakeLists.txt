@@ -49,6 +49,12 @@ if(NOT (WIN32 OR APPLE))
 elseif(APPLE)
   install(CODE "file(RENAME ${src}/libdiff.dylib ${src}/diffosx.so)")
 endif()
+if(NOT (WIN32 OR APPLE))
+  include(GNUInstallDirs)
+  set(module_dir ${CMAKE_INSTALL_FULL_DATADIR}/textadept/modules/file_diff)
+  install(CODE "file(MAKE_DIRECTORY ${module_dir})")
+  install(FILES init.lua diff.so DESTINATION ${module_dir})
+endif()
 
 # Documentation.
 get_filename_component(ta_dir ${src}/../../ ABSOLUTE)

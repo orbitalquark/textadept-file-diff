@@ -21,7 +21,7 @@ jobs:
         shell: bash
         run: |
           mkdir -p build/_deps && mv textadept-build/* build/_deps && rm -r textadept-build
-          cmake -S . -B build
+          cmake -S . -B build -D CMAKE_INSTALL_PREFIX=build/install
           cmake --build build --config Release --target diff -j
           cmake --install build --config Release
       - name: Upload artifacts
