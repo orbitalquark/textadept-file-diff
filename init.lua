@@ -93,11 +93,7 @@ if not rawget(_L, 'Compare Files') then
 end
 
 local lib = 'file_diff.diff'
-if OSX then
-  lib = lib .. 'osx'
-elseif WIN32 and CURSES then
-  lib = lib .. '-curses'
-end
+if OSX then lib = lib .. 'osx' end
 local diff = require(lib)
 local DELETE, INSERT = 0, 1 -- C++: "enum Operation {DELETE, INSERT, EQUAL};"
 
