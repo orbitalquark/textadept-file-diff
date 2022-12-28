@@ -38,12 +38,13 @@ even if one buffer has a change and the other does not (additions or deletions).
 Windows and Linux | macOS | Terminal | Command
 -|-|-|-
 **Tools**| | |
-F6 | F6 | F6 | Compare files...
-Shift+F6 | ⇧F6 | S-F6 | Compare the buffers in two split views
-Alt+Down | ⌥⇣ | M-Down | Goto next difference
-Alt+Up | ⌥⇡ | M-Up | Goto previous difference
-Alt+Left | ⌥⇠ | M-Left | Merge left
-Alt+Right | ⌥⇢ | M-Right | Merge right
+F6 | F6 | None | Compare files...
+Shift+F6 | ⇧F6 | None | Compare the buffers in two split views
+Ctrl+F6 | ⌘F6 | None | Stop comparing
+Ctrl+Alt+. | ^⌘. | None | Goto next difference
+Ctrl+Alt+, | ^⌘, | None | Goto previous difference
+Ctrl+Alt+< | ^⌘< | None | Merge left
+Ctrl+Alt+> | ^⌘> | None | Merge right
 
 
 ## Fields defined by `file_diff`

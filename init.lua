@@ -42,12 +42,13 @@ local M = {}
 -- Windows and Linux | macOS | Terminal | Command
 -- -|-|-|-
 -- **Tools**| | |
--- F6 | F6 | F6 | Compare files...
--- Shift+F6 | ⇧F6 | S-F6 | Compare the buffers in two split views
--- Alt+Down | ⌥⇣ | M-Down | Goto next difference
--- Alt+Up | ⌥⇡ | M-Up | Goto previous difference
--- Alt+Left | ⌥⇠ | M-Left | Merge left
--- Alt+Right | ⌥⇢ | M-Right | Merge right
+-- F6 | F6 | None | Compare files...
+-- Shift+F6 | ⇧F6 | None | Compare the buffers in two split views
+-- Ctrl+F6 | ⌘F6 | None | Stop comparing
+-- Ctrl+Alt+. | ^⌘. | None | Goto next difference
+-- Ctrl+Alt+, | ^⌘, | None | Goto previous difference
+-- Ctrl+Alt+< | ^⌘< | None | Merge left
+-- Ctrl+Alt+> | ^⌘> | None | Merge right
 --
 -- @field MARK_ADDITION (number)
 --   The marker for line additions.
@@ -555,13 +556,16 @@ for i = 1, #m_tools - 1 do
     end
   end
 end
-local GUI = not CURSES
-keys.f6 = M.start
-keys['shift+f6'] = m_tools[_L['Compare Files']][_L['Compare Buffers']][2]
-keys[GUI and 'alt+down' or 'meta+down'] = m_tools[_L['Compare Files']][_L['Next Change']][2]
-keys[GUI and 'alt+up' or 'meta+up'] = M.goto_change
-keys[GUI and 'alt+left' or 'meta+left'] = m_tools[_L['Compare Files']][_L['Merge Left']][2]
-keys[GUI and 'alt+right' or 'meta+right'] = M.merge
+if not CURSES then
+  keys.f6 = M.start
+  keys['shift+f6'] = m_tools[_L['Compare Files']][_L['Compare Buffers']][2]
+  keys[not OSX and 'ctrl+f6' or 'cmd+f6'] = m_tools[_L['Compare Files']][_L['Stop Comparing']][2]
+  keys[not OSX and 'ctrl+alt+.' or 'ctrl+cmd+.'] =
+    m_tools[_L['Compare Files']][_L['Next Change']][2]
+  keys[not OSX and 'ctrl+alt+,' or 'ctrl+cmd+,'] = M.goto_change
+  keys[not OSX and 'ctrl+alt+<' or 'ctrl+cmd+<'] = m_tools[_L['Compare Files']][_L['Merge Left']][2]
+  keys[not OSX and 'ctrl+alt+>' or 'ctrl+cmd+>'] = M.merge
+end
 
 return M
 
