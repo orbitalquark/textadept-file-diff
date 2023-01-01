@@ -1,4 +1,4 @@
-// Copyright 2017-2022 Mitchell. See LICENSE.
+// Copyright 2017-2023 Mitchell. See LICENSE.
 
 #include "diff_match_patch.h"
 
