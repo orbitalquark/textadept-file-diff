@@ -1,4 +1,5 @@
 # File Diff
+---
 
 Two-way file comparison for Textadept.
 
@@ -46,31 +47,30 @@ Ctrl+Alt+, | ^⌘, | None | Goto previous difference
 Ctrl+Alt+< | ^⌘< | None | Merge left
 Ctrl+Alt+> | ^⌘> | None | Merge right
 
-
 ## Fields defined by `file_diff`
 
 <a id="file_diff.INDIC_ADDITION"></a>
-### `file_diff.INDIC_ADDITION` (number)
+### `file_diff.INDIC_ADDITION` 
 
 The indicator number for text added within lines.
 
 <a id="file_diff.INDIC_DELETION"></a>
-### `file_diff.INDIC_DELETION` (number)
+### `file_diff.INDIC_DELETION` 
 
 The indicator number for text deleted within lines.
 
 <a id="file_diff.MARK_ADDITION"></a>
-### `file_diff.MARK_ADDITION` (number)
+### `file_diff.MARK_ADDITION` 
 
 The marker for line additions.
 
 <a id="file_diff.MARK_DELETION"></a>
-### `file_diff.MARK_DELETION` (number)
+### `file_diff.MARK_DELETION` 
 
 The marker for line deletions.
 
 <a id="file_diff.MARK_MODIFICATION"></a>
-### `file_diff.MARK_MODIFICATION` (number)
+### `file_diff.MARK_MODIFICATION` 
 
 The marker for line modifications.
 
@@ -78,7 +78,7 @@ The marker for line modifications.
 ## Functions defined by `file_diff`
 
 <a id="_G.diff"></a>
-### `_G.diff`(*text1, text2*)
+### `_G.diff`(*text1*, *text2*)
 
 Returns a list that represents the differences between strings *text1* and *text2*.
 Each consecutive pair of elements in the returned list represents a "diff". The first element
@@ -87,17 +87,18 @@ is the associated diff text.
 
 Parameters:
 
-* *`text1`*: String to compare against.
-* *`text2`*: String to compare.
+- *text1*:  String to compare against.
+- *text2*:  String to compare.
 
 Usage:
 
-* `diffs = diff(text1, text2)
-       for i = 1, #diffs, 2 do print(diffs[i], diffs[i + 1]) end`
+- `diffs = diff(text1, text2)
+        for i = 1, #diffs, 2 do print(diffs[i], diffs[i + 1]) end
+`
 
 Return:
 
-* list of differences
+- list of differences
 
 <a id="file_diff.goto_change"></a>
 ### `file_diff.goto_change`(*next*)
@@ -107,7 +108,7 @@ Jumps to the next or previous difference between the two files depending on bool
 
 Parameters:
 
-* *`next`*: Whether to go to the next or previous difference relative to the current line.
+- *next*:  Whether to go to the next or previous difference relative to the current line.
 
 <a id="file_diff.merge"></a>
 ### `file_diff.merge`(*left*)
@@ -117,21 +118,21 @@ merge direction.
 
 Parameters:
 
-* *`left`*: Whether to merge from right to left or left to right.
+- *left*:  Whether to merge from right to left or left to right.
 
 <a id="file_diff.start"></a>
-### `file_diff.start`(*file1, file2, horizontal*)
+### `file_diff.start`(*file1*, *file2*, *horizontal*)
 
 Highlight differences between files *file1* and *file2*, or the user-selected files.
 
 Parameters:
 
-* *`file1`*: Optional name of the older file. If `-`, uses the current buffer. If `nil`,
-  the user is prompted for a file.
-* *`file2`*: Optional name of the newer file. If `-`, uses the current buffer. If `nil`,
-  the user is prompted for a file.
-* *`horizontal`*: Optional flag specifying whether or not to split the view horizontally. The
-  default value is `false`, comparing the two files side-by-side.
+- *file1*:  Optional name of the older file. If `-`, uses the current buffer. If `nil`,
+   the user is prompted for a file.
+- *file2*:  Optional name of the newer file. If `-`, uses the current buffer. If `nil`,
+   the user is prompted for a file.
+- *horizontal*:  Optional flag specifying whether or not to split the view horizontally. The
+   default value is `false`, comparing the two files side-by-side.
 
 
 ---

@@ -58,15 +58,10 @@ endif()
 
 # Documentation.
 get_filename_component(ta_dir ${src}/../../ ABSOLUTE)
-add_custom_target(docs DEPENDS README.md luadoc)
+add_custom_target(docs DEPENDS README.md)
 add_custom_command(OUTPUT ${src}/README.md
-  COMMAND luadoc --doclet markdowndoc ${src}/init.lua > ${src}/README.md
+  COMMAND ldoc --filter markdowndoc.ldoc ${src}/init.lua > ${src}/README.md
   COMMAND sed -i -e "1,+4d" -e "6c# File Diff" -e "7d" -e "s/^##/#/;" ${src}/README.md
   DEPENDS init.lua
   WORKING_DIRECTORY ${ta_dir}/scripts
   VERBATIM)
-add_custom_target(luadoc DEPENDS tags api)
-add_custom_command(OUTPUT ${src}/tags ${src}/api
-  COMMAND luadoc -d ${src} --doclet tadoc ${src}/init.lua --ta-home=${ta_dir}
-  DEPENDS init.lua
-  WORKING_DIRECTORY ${ta_dir}/modules/lua)

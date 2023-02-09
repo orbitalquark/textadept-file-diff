@@ -2,7 +2,6 @@
 
 local M = {}
 
---[[ This comment is for LuaDoc.
 ---
 -- Two-way file comparison for Textadept.
 --
@@ -49,24 +48,18 @@ local M = {}
 -- Ctrl+Alt+, | ^⌘, | None | Goto previous difference
 -- Ctrl+Alt+< | ^⌘< | None | Merge left
 -- Ctrl+Alt+> | ^⌘> | None | Merge right
---
--- @field MARK_ADDITION (number)
---   The marker for line additions.
--- @field MARK_DELETION (number)
---   The marker for line deletions.
--- @field MARK_MODIFICATION (number)
---   The marker for line modifications.
--- @field INDIC_ADDITION (number)
---   The indicator number for text added within lines.
--- @field INDIC_DELETION (number)
---   The indicator number for text deleted within lines.
-module('file_diff')]]
+-- @module file_diff
 
-M.MARK_ADDITION = _SCINTILLA.next_marker_number()
-M.MARK_DELETION = _SCINTILLA.next_marker_number()
-M.MARK_MODIFICATION = _SCINTILLA.next_marker_number()
-M.INDIC_ADDITION = _SCINTILLA.next_indic_number()
-M.INDIC_DELETION = _SCINTILLA.next_indic_number()
+--- The marker for line additions.
+M.MARK_ADDITION = _SCINTILLA.new_marker_number()
+--- The marker for line deletions.
+M.MARK_DELETION = _SCINTILLA.new_marker_number()
+--- The marker for line modifications.
+M.MARK_MODIFICATION = _SCINTILLA.new_marker_number()
+--- The indicator number for text added within lines.
+M.INDIC_ADDITION = _SCINTILLA.new_indic_number()
+--- The indicator number for text deleted within lines.
+M.INDIC_DELETION = _SCINTILLA.new_indic_number()
 local MARK_ADDITION = M.MARK_ADDITION
 local MARK_DELETION = M.MARK_DELETION
 local MARK_MODIFICATION = M.MARK_MODIFICATION
@@ -290,7 +283,6 @@ local starting_diff = false
 --   the user is prompted for a file.
 -- @param horizontal Optional flag specifying whether or not to split the view horizontally. The
 --   default value is `false`, comparing the two files side-by-side.
--- @name start
 function M.start(file1, file2, horizontal)
   file1 = file1 or ui.dialogs.open{
     title = _L['Select the first file to compare'],
@@ -347,7 +339,6 @@ end
 -- Jumps to the next or previous difference between the two files depending on boolean *next*.
 -- [`file_diff.start()`]() must have been called previously.
 -- @param next Whether to go to the next or previous difference relative to the current line.
--- @name goto_change
 function M.goto_change(next)
   if not _VIEWS[view1] or not _VIEWS[view2] then return end
   -- Determine the line to start on, keeping in mind the synchronized line numbers may be different.
@@ -419,7 +410,6 @@ end
 -- Merges a change from one buffer to another, depending on the change under the caret and the
 -- merge direction.
 -- @param left Whether to merge from right to left or left to right.
--- @name merge
 function M.merge(left)
   if not _VIEWS[view1] or not _VIEWS[view2] then return end
   local buffer1, buffer2 = view1.buffer, view2.buffer
@@ -534,24 +524,21 @@ for i = 1, #m_tools - 1 do
   elseif found_area then
     local label = m_tools[i].title or m_tools[i][1]
     if 'Compare Files' < label:gsub('^_', '') or m_tools[i][1] == '' then
-      -- LuaFormatter off
       table.insert(m_tools, i, {
-        title = _L['Compare Files'],
-        {_L['Compare Files...'], M.start},
-        {_L['Compare This File With...'], function()
-          if buffer.filename then M.start(buffer.filename) end
-        end},
-        {_L['Compare Buffers'], function() M.start('-', '-') end},
-        {''},
+        title = _L['Compare Files'], --
+        {_L['Compare Files...'], M.start}, {
+          _L['Compare This File With...'],
+          function() if buffer.filename then M.start(buffer.filename) end end
+        }, {_L['Compare Buffers'], function() M.start('-', '-') end}, --
+        {''}, --
         {_L['Next Change'], function() M.goto_change(true) end},
-        {_L['Previous Change'], M.goto_change},
-        {''},
-        {_L['Merge Left'], function() M.merge(true) end},
-        {_L['Merge Right'], M.merge},
-        {''},
+        {_L['Previous Change'], M.goto_change}, --
+        {''}, --
+        {_L['Merge Left'], function() M.merge(true) end}, --
+        {_L['Merge Right'], M.merge}, --
+        {''}, --
         {_L['Stop Comparing'], stop}
       })
-      -- LuaFormatter on
       break
     end
   end
@@ -569,7 +556,8 @@ end
 
 return M
 
---[[ The function below is a Lua C function.
+-- The function below is a Lua C function.
+
 ---
 -- Returns a list that represents the differences between strings *text1* and *text2*.
 -- Each consecutive pair of elements in the returned list represents a "diff". The first element
@@ -580,5 +568,4 @@ return M
 -- @return list of differences
 -- @usage diffs = diff(text1, text2)
 --        for i = 1, #diffs, 2 do print(diffs[i], diffs[i + 1]) end
-function _G.diff(text1, text2) end
-]]
+-- @function _G.diff
