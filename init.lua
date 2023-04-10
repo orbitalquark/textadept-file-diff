@@ -1,9 +1,6 @@
 -- Copyright 2015-2023 Mitchell. See LICENSE.
 
-local M = {}
-
----
--- Two-way file comparison for Textadept.
+--- Two-way file comparison for Textadept.
 --
 -- Install this module by copying it into your *~/.textadept/modules/* directory or Textadept's
 -- *modules/* directory, and then putting the following in your *~/.textadept/init.lua*:
@@ -49,6 +46,7 @@ local M = {}
 -- Ctrl+Alt+< | ^⌘< | None | Merge left
 -- Ctrl+Alt+> | ^⌘> | None | Merge right
 -- @module file_diff
+local M = {}
 
 --- The marker for line additions.
 M.MARK_ADDITION = _SCINTILLA.new_marker_number()
@@ -93,7 +91,7 @@ local DELETE, INSERT = 0, 1 -- C++: "enum Operation {DELETE, INSERT, EQUAL};"
 
 local view1, view2
 
--- Clear markers, indicators, and placeholder lines.
+--- Clear markers, indicators, and placeholder lines.
 -- Used when re-marking changes or finished comparing.
 local function clear_marked_changes()
   local buffer1 = _VIEWS[view1] and view1.buffer
@@ -117,7 +115,7 @@ local function clear_marked_changes()
 end
 
 local synchronizing = false
--- Synchronize the scroll and line position of the other buffer.
+--- Synchronize the scroll and line position of the other buffer.
 local function synchronize()
   synchronizing = true
   local line = buffer:line_from_position(buffer.current_pos)
@@ -131,14 +129,14 @@ local function synchronize()
   synchronizing = false
 end
 
--- Returns the number of lines contained in the given string.
+--- Returns the number of lines contained in the given string.
 local function count_lines(text)
   local lines = 1
   for _ in text:gmatch('\n') do lines = lines + 1 end
   return lines
 end
 
--- Mark the differences between the two buffers.
+--- Mark the differences between the two buffers.
 local function mark_changes()
   if not _VIEWS[view1] or not _VIEWS[view2] then return end
   clear_marked_changes() -- clear previous marks
@@ -275,8 +273,7 @@ end
 
 local starting_diff = false
 
----
--- Highlight differences between files *file1* and *file2*, or the user-selected files.
+--- Highlight differences between files *file1* and *file2*, or the user-selected files.
 -- @param file1 Optional name of the older file. If `-`, uses the current buffer. If `nil`,
 --   the user is prompted for a file.
 -- @param file2 Optional name of the newer file. If `-`, uses the current buffer. If `nil`,
@@ -313,7 +310,7 @@ function M.start(file1, file2, horizontal)
   if file1 == '-' or file2 == '-' then mark_changes() end
 end
 
--- Stops comparing.
+--- Stops comparing.
 local function stop()
   if not _VIEWS[view1] or not _VIEWS[view2] then return end
   clear_marked_changes()
@@ -324,7 +321,7 @@ end
 events.connect(events.BUFFER_BEFORE_SWITCH, function() if not starting_diff then stop() end end)
 events.connect(events.BUFFER_DELETED, stop)
 
--- Retrieves the equivalent of line number *line* in the other buffer.
+--- Retrieves the equivalent of line number *line* in the other buffer.
 -- @param line Line to get the synchronized equivalent of in the other buffer.
 -- @return line
 local function get_synchronized_line(line)
@@ -335,8 +332,7 @@ local function get_synchronized_line(line)
   return line
 end
 
----
--- Jumps to the next or previous difference between the two files depending on boolean *next*.
+--- Jumps to the next or previous difference between the two files depending on boolean *next*.
 -- [`file_diff.start()`]() must have been called previously.
 -- @param next Whether to go to the next or previous difference relative to the current line.
 function M.goto_change(next)
@@ -406,8 +402,7 @@ function M.goto_change(next)
   view:vertical_center_caret()
 end
 
----
--- Merges a change from one buffer to another, depending on the change under the caret and the
+--- Merges a change from one buffer to another, depending on the change under the caret and the
 -- merge direction.
 -- @param left Whether to merge from right to left or left to right.
 function M.merge(left)
@@ -558,8 +553,7 @@ return M
 
 -- The function below is a Lua C function.
 
----
--- Returns a list that represents the differences between strings *text1* and *text2*.
+--- Returns a list that represents the differences between strings *text1* and *text2*.
 -- Each consecutive pair of elements in the returned list represents a "diff". The first element
 -- is an integer: 0 for a deletion, 1 for an insertion, and 2 for equality. The second element
 -- is the associated diff text.
