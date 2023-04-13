@@ -333,7 +333,7 @@ local function get_synchronized_line(line)
 end
 
 --- Jumps to the next or previous difference between the two files depending on boolean *next*.
--- [`file_diff.start()`]() must have been called previously.
+-- `file_diff.start()` must have been called previously.
 -- @param next Whether to go to the next or previous difference relative to the current line.
 function M.goto_change(next)
   if not _VIEWS[view1] or not _VIEWS[view2] then return end
