@@ -511,7 +511,7 @@ args.register('-d', '--diff', 2, M.start, 'Compares two files')
 
 -- Add a menu and configure key bindings.
 -- (Insert 'Compare Files' menu in alphabetical order.)
-local m_tools = textadept.menu.menubar[_L['Tools']]
+local m_tools = textadept.menu.menubar['Tools']
 local found_area
 for i = 1, #m_tools - 1 do
   if not found_area and m_tools[i + 1].title == _L['Bookmarks'] then
