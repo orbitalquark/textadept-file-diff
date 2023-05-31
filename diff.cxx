@@ -10,16 +10,16 @@ extern "C" {
 
 /** diff() Lua function. */
 static int diff(lua_State *L) {
-  diff_match_patch<std::string> dmp;
-  auto diffs = dmp.diff_main(luaL_checkstring(L, 1), luaL_checkstring(L, 2), false);
-  dmp.diff_cleanupSemantic(diffs);
-  lua_createtable(L, diffs.size() * 2, 0);
-  int len = 1;
-  for (auto &diff : diffs) {
-    lua_pushnumber(L, diff.operation), lua_rawseti(L, -2, len++);
-    lua_pushstring(L, diff.text.c_str()), lua_rawseti(L, -2, len++);
-  }
-  return 1;
+	diff_match_patch<std::string> dmp;
+	auto diffs = dmp.diff_main(luaL_checkstring(L, 1), luaL_checkstring(L, 2), false);
+	dmp.diff_cleanupSemantic(diffs);
+	lua_createtable(L, diffs.size() * 2, 0);
+	int len = 1;
+	for (auto &diff : diffs) {
+		lua_pushnumber(L, diff.operation), lua_rawseti(L, -2, len++);
+		lua_pushstring(L, diff.text.c_str()), lua_rawseti(L, -2, len++);
+	}
+	return 1;
 }
 
 extern "C" {
