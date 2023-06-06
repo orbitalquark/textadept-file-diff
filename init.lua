@@ -5,16 +5,16 @@
 -- Install this module by copying it into your *~/.textadept/modules/* directory or Textadept's
 -- *modules/* directory, and then putting the following in your *~/.textadept/init.lua*:
 --
---     require('file_diff')
+--	require('file_diff')
 --
 -- ### Compiling
 --
 -- Releases include binaries, so building this modules should not be necessary. If you want
 -- to build manually, use CMake. For example:
 --
---     cmake -S . -B build_dir
---     cmake --build build_dir --target diff
---     cmake --install build_dir
+--	cmake -S . -B build_dir
+--	cmake --build build_dir --target diff
+--	cmake --install build_dir
 --
 -- ### Usage
 --
@@ -24,10 +24,10 @@
 -- 2. The caret is initially placed in the file on the left.
 -- 3. Go to the next change via menu or key binding.
 -- 4. Merge the change from the other buffer into the current one (right to left) via menu or
---   key binding.
+--	key binding.
 -- 5. Go to the next change via menu or key binding.
 -- 6. Merge the change from the current buffer into the other one (left to right) via menu or
---   key binding.
+--	key binding.
 -- 7. Repeat as necessary.
 --
 -- Note: merging can be performed wherever the caret is placed when jumping between changes,
@@ -275,11 +275,11 @@ local starting_diff = false
 
 --- Highlight differences between files *file1* and *file2*, or the user-selected files.
 -- @param file1 Optional name of the older file. If `-`, uses the current buffer. If `nil`,
---   the user is prompted for a file.
+--	the user is prompted for a file.
 -- @param file2 Optional name of the newer file. If `-`, uses the current buffer. If `nil`,
---   the user is prompted for a file.
+--	the user is prompted for a file.
 -- @param horizontal Optional flag specifying whether or not to split the view horizontally. The
---   default value is `false`, comparing the two files side-by-side.
+--	default value is `false`, comparing the two files side-by-side.
 function M.start(file1, file2, horizontal)
 	file1 = file1 or ui.dialogs.open{
 		title = _L['Select the first file to compare'],
@@ -561,5 +561,5 @@ return M
 -- @param text2 String to compare.
 -- @return list of differences
 -- @usage diffs = diff(text1, text2)
---        for i = 1, #diffs, 2 do print(diffs[i], diffs[i + 1]) end
+--	for i = 1, #diffs, 2 do print(diffs[i], diffs[i + 1]) end
 -- @function _G.diff
