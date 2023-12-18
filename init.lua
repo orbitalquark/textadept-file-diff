@@ -63,6 +63,18 @@ local MARK_DELETION = M.MARK_DELETION
 local MARK_MODIFICATION = M.MARK_MODIFICATION
 local INDIC_ADDITION = M.INDIC_ADDITION
 local INDIC_DELETION = M.INDIC_DELETION
+--- The name of the theme color used to mark additions.
+-- The default value is 'green'. If your theme does not define that color, set this field to
+-- your theme's equivalent.
+M.addition_color_name = 'green'
+--- The name of the theme color used to mark deletions.
+-- The default value is 'red'. If your theme does not define that color, set this field to your
+-- theme's equivalent.
+M.deletion_color_name = 'red'
+--- The name of the theme color used to mark modifications.
+-- The default value is 'yellow'. If your theme does not define that color, set this field to
+-- your theme's equivalent.
+M.modification_color_name = 'yellow'
 
 -- Localizations.
 local _L = _L
@@ -490,19 +502,22 @@ end)
 
 events.connect(events.VIEW_NEW, function()
 	local markers = {
-		[MARK_ADDITION] = 'green', [MARK_DELETION] = 'red', [MARK_MODIFICATION] = 'yellow'
+		[MARK_ADDITION] = M.addition_color_name, [MARK_DELETION] = M.deletion_color_name,
+		[MARK_MODIFICATION] = M.modification_color_name
 	}
 	for mark, color in pairs(markers) do
 		view:marker_define(mark, not CURSES and view.MARK_BACKGROUND or view.MARK_FULLRECT)
-		view.marker_back[mark] = view.colors[color]
+		if view.colors[color] then view.marker_back[mark] = view.colors[color] end
 		if not CURSES then
 			view.marker_layer[mark], view.marker_alpha[mark] = view.LAYER_UNDER_TEXT, 0x60
 		end
 	end
-	local indicators = {[INDIC_ADDITION] = 'green', [INDIC_DELETION] = 'red'}
+	local indicators = {
+		[INDIC_ADDITION] = M.addition_color_name, [INDIC_DELETION] = M.deletion_color_name
+	}
 	for indic, color in pairs(indicators) do
 		view.indic_style[indic] = not CURSES and view.INDIC_FULLBOX or view.INDIC_STRAIGHTBOX
-		view.indic_fore[indic] = view.colors[color]
+		if view.colors[color] then view.indic_fore[indic] = view.colors[color] end
 		if not CURSES then view.indic_alpha[indic], view.indic_under[indic] = 0x60, true end
 	end
 end)

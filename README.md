@@ -1,4 +1,5 @@
 # File Diff
+---
 
 Two-way file comparison for Textadept.
 
@@ -72,6 +73,27 @@ The marker for line deletions.
 ### `file_diff.MARK_MODIFICATION` 
 
 The marker for line modifications.
+
+<a id="file_diff.addition_color_name"></a>
+### `file_diff.addition_color_name` 
+
+The name of the theme color used to mark additions.
+The default value is 'green'. If your theme does not define that color, set this field to
+your theme's equivalent.
+
+<a id="file_diff.deletion_color_name"></a>
+### `file_diff.deletion_color_name` 
+
+The name of the theme color used to mark deletions.
+The default value is 'red'. If your theme does not define that color, set this field to your
+theme's equivalent.
+
+<a id="file_diff.modification_color_name"></a>
+### `file_diff.modification_color_name` 
+
+The name of the theme color used to mark modifications.
+The default value is 'yellow'. If your theme does not define that color, set this field to
+your theme's equivalent.
 
 
 ## Functions defined by `file_diff`
