@@ -1,5 +1,4 @@
 # File Diff
----
 
 Two-way file comparison for Textadept.
 
