@@ -1,4 +1,4 @@
--- Copyright 2015-2023 Mitchell. See LICENSE.
+-- Copyright 2015-2024 Mitchell. See LICENSE.
 
 --- Two-way file comparison for Textadept.
 --
