@@ -49,15 +49,15 @@
 local M = {}
 
 --- The marker for line additions.
-M.MARK_ADDITION = _SCINTILLA.new_marker_number()
+M.MARK_ADDITION = view.new_marker_number()
 --- The marker for line deletions.
-M.MARK_DELETION = _SCINTILLA.new_marker_number()
+M.MARK_DELETION = view.new_marker_number()
 --- The marker for line modifications.
-M.MARK_MODIFICATION = _SCINTILLA.new_marker_number()
+M.MARK_MODIFICATION = view.new_marker_number()
 --- The indicator number for text added within lines.
-M.INDIC_ADDITION = _SCINTILLA.new_indic_number()
+M.INDIC_ADDITION = view.new_indic_number()
 --- The indicator number for text deleted within lines.
-M.INDIC_DELETION = _SCINTILLA.new_indic_number()
+M.INDIC_DELETION = view.new_indic_number()
 local MARK_ADDITION = M.MARK_ADDITION
 local MARK_DELETION = M.MARK_DELETION
 local MARK_MODIFICATION = M.MARK_MODIFICATION
@@ -295,12 +295,12 @@ local starting_diff = false
 function M.start(file1, file2, horizontal)
 	file1 = file1 or ui.dialogs.open{
 		title = _L['Select the first file to compare'],
-		dir = (buffer.filename or ''):match('^.+[/\\]') or lfs.currentdir()
+		dir = (buffer.filename or ''):match('^(.+)[/\\]') or lfs.currentdir()
 	}
 	if not file1 then return end
 	file2 = file2 or ui.dialogs.open{
 		title = string.format('%s %s', _L['Select the file to compare to'], file1:match('[^/\\]+$')),
-		dir = file1:match('^.+[/\\]') or lfs.currentdir()
+		dir = file1:match('^(.+)[/\\]') or lfs.currentdir()
 	}
 	if not file2 then return end
 	starting_diff = true
@@ -338,9 +338,11 @@ events.connect(events.BUFFER_DELETED, stop)
 -- @return line
 local function get_synchronized_line(line)
 	local visible_line = view:visible_from_doc_line(line)
+	local pos = buffer.current_pos
 	ui.goto_view(view == view1 and view2 or view1)
 	line = view:doc_line_from_visible(visible_line)
 	ui.goto_view(view == view2 and view1 or view2)
+	buffer:set_empty_selection(pos)
 	return line
 end
 
@@ -431,9 +433,10 @@ function M.merge(left)
 		local line = get_synchronized_line(start_line) + 1
 		if (view == view1 and buffer2 or buffer1):marker_get(line) & diff_marker > 0 then
 			ui.goto_view(view == view1 and view2 or view1)
-			buffer:line_down()
+			buffer:set_empty_selection(buffer:position_from_line(line))
 			M.merge(left)
 			ui.goto_view(view == view2 and view1 or view2)
+			buffer:set_empty_selection(buffer:position_from_line(start_line))
 		end
 		return
 	end
@@ -466,7 +469,6 @@ function M.merge(left)
 		start_line = get_synchronized_line(start_line)
 		end_line = get_synchronized_line(end_line)
 		ui.goto_view(view == view1 and view2 or view1)
-		if buffer.annotation_text[end_line] ~= '' then end_line = end_line + 1 end
 		buffer.target_start = buffer:position_from_line(start_line)
 		buffer.target_end = buffer:position_from_line(end_line)
 		if view == view2 and left or view == view1 and not left then
