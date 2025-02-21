@@ -97,7 +97,11 @@ if not rawget(_L, 'Compare Files') then
 end
 
 local lib = 'file_diff.diff'
-if OSX then lib = lib .. 'osx' end
+if OSX then
+	lib = lib .. 'osx'
+elseif LINUX and io.popen('uname -m'):read() == 'aarch64' then
+	lib = lib .. 'arm'
+end
 local diff = require(lib)
 local DELETE, INSERT = 0, 1 -- C++: "enum Operation {DELETE, INSERT, EQUAL};"
 

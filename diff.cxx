@@ -28,4 +28,5 @@ int luaopen_diff(lua_State *L) { return (lua_pushcfunction(L, diff), 1); }
 // Platform-specific Lua library entry points.
 LUALIB_API int luaopen_file_diff_diff(lua_State *L) { return luaopen_diff(L); }
 LUALIB_API int luaopen_file_diff_diffosx(lua_State *L) { return luaopen_diff(L); }
+LUALIB_API int luaopen_file_diff_diffarm(lua_State *L) { return luaopen_diff(L); }
 }
