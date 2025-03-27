@@ -1,25 +1,27 @@
 -- Copyright 2015-2025 Mitchell. See LICENSE.
 
 --- Two-way file comparison for Textadept.
---
 -- Install this module by copying it into your *~/.textadept/modules/* directory or Textadept's
 -- *modules/* directory, and then putting the following in your *~/.textadept/init.lua*:
 --
---	require('file_diff')
+-- ```lua
+-- local file_diff = require('file_diff')
+-- ```
 --
--- ### Compiling
+-- ## Compiling
 --
 -- Releases include binaries, so building this modules should not be necessary. If you want
 -- to build manually, use CMake. For example:
 --
---	cmake -S . -B build_dir
---	cmake --build build_dir --target diff
---	cmake --install build_dir
+-- ```bash
+-- cmake -S . -B build_dir
+-- cmake --build build_dir --target diff
+-- cmake --install build_dir
+-- ```
 --
--- ### Usage
+-- ## Usage
 --
 -- A sample workflow is this:
---
 -- 1. Start comparing two files via the "Compare Files" submenu in the "Tools" menu.
 -- 2. The caret is initially placed in the file on the left.
 -- 3. Go to the next change via menu or key binding.
@@ -33,7 +35,7 @@
 -- Note: merging can be performed wherever the caret is placed when jumping between changes,
 -- even if one buffer has a change and the other does not (additions or deletions).
 --
--- ### Key Bindings
+-- ## Key Bindings
 --
 -- Windows and Linux | macOS | Terminal | Command
 -- -|-|-|-
@@ -289,13 +291,13 @@ end
 
 local starting_diff = false
 
---- Highlight differences between files *file1* and *file2*, or the user-selected files.
--- @param file1 Optional name of the older file. If `-`, uses the current buffer. If `nil`,
---	the user is prompted for a file.
--- @param file2 Optional name of the newer file. If `-`, uses the current buffer. If `nil`,
---	the user is prompted for a file.
--- @param horizontal Optional flag specifying whether or not to split the view horizontally. The
---	default value is `false`, comparing the two files side-by-side.
+--- Highlight differences between files.
+-- @param[opt] file1 String older filename. If `-`, uses the current buffer. If `nil`, the user
+--	is prompted for a file.
+-- @param[optchain] file2 String newer filename. If `-`, uses the current buffer. If `nil`, the user
+--	is prompted for a file.
+-- @param[optchain=false] horizontal Split the view horizontally instead of vertically. The
+--	default is to compare files side-by-side.
 function M.start(file1, file2, horizontal)
 	file1 = file1 or ui.dialogs.open{
 		title = _L['Select the first file to compare'],
@@ -337,7 +339,7 @@ end
 events.connect(events.BUFFER_BEFORE_SWITCH, function() if not starting_diff then stop() end end)
 events.connect(events.BUFFER_DELETED, stop)
 
---- Retrieves the equivalent of line number *line* in the other buffer.
+--- Retrieves a line number's equivalent in the other buffer.
 -- @param line Line to get the synchronized equivalent of in the other buffer.
 -- @return line
 local function get_synchronized_line(line)
@@ -350,9 +352,10 @@ local function get_synchronized_line(line)
 	return line
 end
 
---- Jumps to the next or previous difference between the two files depending on boolean *next*.
+--- Jumps to the next or previous difference between the two files.
 -- `file_diff.start()` must have been called previously.
--- @param next Whether to go to the next or previous difference relative to the current line.
+-- @param[opt=false] next Go to the next previous difference relative to the current line,
+--	as opposed to the previous one.
 function M.goto_change(next)
 	if not _VIEWS[view1] or not _VIEWS[view2] then return end
 	-- Determine the line to start on, keeping in mind the synchronized line numbers may be different.
@@ -422,7 +425,7 @@ end
 
 --- Merges a change from one buffer to another, depending on the change under the caret and the
 -- merge direction.
--- @param left Whether to merge from right to left or left to right.
+-- @param[opt=false] left Merge from right to left as opposed to left to right.
 function M.merge(left)
 	if not _VIEWS[view1] or not _VIEWS[view2] then return end
 	local buffer1, buffer2 = view1.buffer, view2.buffer
@@ -574,13 +577,12 @@ return M
 
 -- The function below is a Lua C function.
 
---- Returns a list that represents the differences between strings *text1* and *text2*.
+--- Returns a list of the differences between strings.
 -- Each consecutive pair of elements in the returned list represents a "diff". The first element
 -- is an integer: 0 for a deletion, 1 for an insertion, and 2 for equality. The second element
 -- is the associated diff text.
 -- @param text1 String to compare against.
 -- @param text2 String to compare.
--- @return list of differences
 -- @usage diffs = diff(text1, text2)
---	for i = 1, #diffs, 2 do print(diffs[i], diffs[i + 1]) end
+-- @usage for i = 1, #diffs, 2 do print(diffs[i], diffs[i + 1]) end
 -- @function _G.diff
