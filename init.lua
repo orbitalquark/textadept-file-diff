@@ -562,16 +562,16 @@ for i = 1, #m_tools - 1 do
 		end
 	end
 end
-if not CURSES then
-	keys.f6 = M.start
-	keys['shift+f6'] = m_tools[_L['Compare Files']][_L['Compare Buffers']][2]
-	keys[not OSX and 'ctrl+f6' or 'cmd+f6'] = m_tools[_L['Compare Files']][_L['Stop Comparing']][2]
-	keys[not OSX and 'ctrl+alt+.' or 'ctrl+cmd+.'] =
-		m_tools[_L['Compare Files']][_L['Next Change']][2]
-	keys[not OSX and 'ctrl+alt+,' or 'ctrl+cmd+,'] = M.goto_change
-	keys[not OSX and 'ctrl+alt+<' or 'ctrl+cmd+<'] = m_tools[_L['Compare Files']][_L['Merge Left']][2]
-	keys[not OSX and 'ctrl+alt+>' or 'ctrl+cmd+>'] = M.merge
-end
+
+keys.assign_platform_bindings{
+	[M.start] = {'f6', 'f6', nil},
+	[m_tools[_L['Compare Files']][_L['Compare Buffers']][2]] = {'shift+f6', 'shift+f6', nil},
+	[m_tools[_L['Compare Files']][_L['Stop Comparing']][2]] = {'ctrl+f6', 'cmd+f6', nil},
+	[m_tools[_L['Compare Files']][_L['Next Change']][2]] = {'ctrl+alt+.', 'ctrl+cmd+.', nil},
+	[M.goto_change] = {'ctrl+alt+,', 'ctrl+cmd+,', nil},
+	[m_tools[_L['Compare Files']][_L['Merge Left']][2]] = {'ctrl+alt+<', 'ctrl+cmd+<', nil},
+	[M.merge] = {'ctrl+alt+>', 'ctrl+cmd+>', nil}
+}
 
 return M
 
