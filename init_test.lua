@@ -94,7 +94,7 @@ test('file_diff.goto_change(true) should jump to the next change (left view)', f
 	start_basic_diff()
 	local lines = {}
 
-	for i = 1, 3 do
+	for _ = 1, 3 do
 		file_diff.goto_change(true)
 		lines[#lines + 1] = buffer:line_from_position(buffer.current_pos)
 	end
@@ -106,7 +106,7 @@ test('file_diff.goto_change should jump to the previous change (left view)', fun
 	start_basic_diff()
 	local lines = {}
 
-	for i = 1, 3 do
+	for _ = 1, 3 do
 		file_diff.goto_change()
 		lines[#lines + 1] = buffer:line_from_position(buffer.current_pos)
 	end
@@ -120,7 +120,7 @@ test('file_diff.goto_change(true) should jump to the next change (right view)', 
 	ui.goto_view(_VIEWS[2])
 	local lines = {}
 
-	for i = 1, 3 do
+	for _ = 1, 3 do
 		file_diff.goto_change(true)
 		lines[#lines + 1] = buffer:line_from_position(buffer.current_pos)
 	end
@@ -133,7 +133,7 @@ test('file_diff.goto_change should jump to the previous change (right view)', fu
 	ui.goto_view(_VIEWS[2])
 	local lines = {}
 
-	for i = 1, 3 do
+	for _ = 1, 3 do
 		file_diff.goto_change()
 		lines[#lines + 1] = buffer:line_from_position(buffer.current_pos)
 	end
@@ -168,7 +168,7 @@ test('file_diff.goto_change should treat multi-line changes as a single change',
 	ui.goto_view(_VIEWS[1])
 	local lines = {}
 
-	for i = 1, 3 do
+	for _ = 1, 3 do
 		file_diff.goto_change(true)
 		lines[#lines + 1] = buffer:line_from_position(buffer.current_pos)
 	end
