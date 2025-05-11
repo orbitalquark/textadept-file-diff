@@ -430,8 +430,9 @@ test('file_diff.goto_change should notify when there are no more changes', funct
 	view:split(true)
 	buffer.new()
 	file_diff.start('-', '-')
+	local _<close> = test.disable_metafield(ui, 'statusbar_text')
 
 	file_diff.goto_change(true)
 
-	-- TODO: how to test statusbar was written to? Cannot mock it.
+	test.assert_equal(ui.statusbar_text, _L['No more differences'])
 end)
