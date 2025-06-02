@@ -78,26 +78,6 @@ M.deletion_color_name = 'red'
 -- your theme's equivalent.
 M.modification_color_name = 'yellow'
 
--- Localizations.
-local _L = _L
-if not rawget(_L, 'Compare Files') then
-	-- Dialogs.
-	_L['Select the first file to compare'] = 'Select the first file to compare'
-	_L['Select the file to compare to'] = 'Select the file to compare to'
-	-- Status.
-	_L['No more differences'] = 'No more differences'
-	-- Menu.
-	_L['Compare Files'] = 'Compare _Files'
-	_L['Compare Files...'] = '_Compare Files...'
-	_L['Compare This File With...'] = 'Compare This File _With...'
-	_L['Compare Buffers'] = 'Compare _Buffers'
-	_L['Next Change'] = '_Next Change'
-	_L['Previous Change'] = '_Previous Change'
-	_L['Merge Left'] = 'Merge _Left'
-	_L['Merge Right'] = 'Merge _Right'
-	_L['Stop Comparing'] = '_Stop Comparing'
-end
-
 local lib = 'file_diff.diff'
 if OSX then
 	lib = lib .. 'osx'
@@ -535,6 +515,15 @@ args.register('-d', '--diff', 2, M.start, 'Compares two files')
 
 -- Add a menu and configure key bindings.
 -- (Insert 'Compare Files' menu in alphabetical order.)
+_L['Compare Files'] = 'Compare _Files'
+_L['Compare Files...'] = '_Compare Files...'
+_L['Compare This File With...'] = 'Compare This File _With...'
+_L['Compare Buffers'] = 'Compare _Buffers'
+_L['Next Change'] = '_Next Change'
+_L['Previous Change'] = '_Previous Change'
+_L['Merge Left'] = 'Merge _Left'
+_L['Merge Right'] = 'Merge _Right'
+_L['Stop Comparing'] = '_Stop Comparing'
 local m_tools = textadept.menu.menubar['Tools']
 local found_area
 for i = 1, #m_tools - 1 do
