@@ -21,7 +21,8 @@ jobs:
         shell: bash
         run: |
           mkdir -p build/_deps && mv textadept-build/* build/_deps && rm -r textadept-build
-          cmake -S . -B build -D CMAKE_INSTALL_PREFIX=build/install
+          cmake -S . -B build -D CMAKE_INSTALL_PREFIX=build/install \
+            -D CMAKE_POLICY_VERSION_MINIMUM=3.5 # for diff-match-patch-cpp-stl
           cmake --build build --config Release --target diff -j
           cmake --install build --config Release
       - name: Upload artifacts
