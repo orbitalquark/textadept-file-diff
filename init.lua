@@ -79,9 +79,9 @@ M.deletion_color_name = 'red'
 M.modification_color_name = 'yellow'
 
 local lib = 'file_diff.diff'
-if OSX then
+if OS == 'macos' then
 	lib = lib .. 'osx'
-elseif LINUX and io.popen('uname -m'):read() == 'aarch64' then
+elseif OS == 'linux' and io.popen('uname -m'):read() == 'aarch64' then
 	lib = lib .. 'arm'
 end
 local diff = require(lib)
@@ -495,9 +495,9 @@ events.connect(events.VIEW_NEW, function()
 		[MARK_MODIFICATION] = M.modification_color_name
 	}
 	for mark, color in pairs(markers) do
-		view:marker_define(mark, not CURSES and view.MARK_BACKGROUND or view.MARK_FULLRECT)
+		view:marker_define(mark, UI ~= 'terminal' and view.MARK_BACKGROUND or view.MARK_FULLRECT)
 		if view.colors[color] then view.marker_back[mark] = view.colors[color] end
-		if not CURSES then
+		if UI ~= 'terminal' then
 			view.marker_layer[mark], view.marker_alpha[mark] = view.LAYER_UNDER_TEXT, 0x60
 		end
 	end
@@ -505,9 +505,9 @@ events.connect(events.VIEW_NEW, function()
 		[INDIC_ADDITION] = M.addition_color_name, [INDIC_DELETION] = M.deletion_color_name
 	}
 	for indic, color in pairs(indicators) do
-		view.indic_style[indic] = not CURSES and view.INDIC_FULLBOX or view.INDIC_STRAIGHTBOX
+		view.indic_style[indic] = UI ~= 'terminal' and view.INDIC_FULLBOX or view.INDIC_STRAIGHTBOX
 		if view.colors[color] then view.indic_fore[indic] = view.colors[color] end
-		if not CURSES then view.indic_alpha[indic], view.indic_under[indic] = 0x60, true end
+		if UI ~= 'terminal' then view.indic_alpha[indic], view.indic_under[indic] = 0x60, true end
 	end
 end)
 

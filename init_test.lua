@@ -113,7 +113,7 @@ test('file_diff.goto_change should jump to the previous change (left view)', fun
 
 	test.assert_equal(lines, {4, 2, 1})
 end)
-expected_failure()
+expected_failure() -- TODO:
 
 test('file_diff.goto_change(true) should jump to the next change (right view)', function()
 	start_basic_diff()
@@ -409,11 +409,11 @@ test('file_diff should synchronize scrolling', function()
 
 	buffer:page_down()
 	ui.update() -- trigger events.UPDATE_UI
-	if CURSES then events.emit(events.UPDATE_UI, buffer.UPDATE_SELECTION) end
+	if UI == 'terminal' then events.emit(events.UPDATE_UI, buffer.UPDATE_SELECTION) end
 
 	test.assert_equal(_VIEWS[1].first_visible_line, _VIEWS[2].first_visible_line)
 end)
-if WIN32 and GUI then skip('crashes inside Scintilla') end -- TODO:
+if OS == 'windows' and UI ~= 'terminal' then skip('crashes inside Scintilla') end -- TODO:
 
 test('file_diff should stop when switching buffers', function()
 	start_basic_diff()
