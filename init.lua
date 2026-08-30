@@ -484,9 +484,9 @@ events.connect(events.UPDATE_UI, function(updated)
 end)
 
 -- Highlight differences as text is typed and deleted.
-events.connect(events.MODIFIED, function(_, modification_type)
+events.connect(events.UPDATE_UI, function(updated)
 	if not _VIEWS[view1] or not _VIEWS[view2] then return end
-	if modification_type & (0x01 | 0x02) > 0 then mark_changes() end -- insert text | delete text
+	if updated & buffer.UPDATE_TEXT > 0 then mark_changes() end
 end)
 
 events.connect(events.VIEW_NEW, function()
